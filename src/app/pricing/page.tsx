@@ -46,7 +46,6 @@ const TIERS: Tier[] = [
     borderColor: "border-lavender/40",
     features: [
       "全部基础会员模板",
-      "快捷指令（Shortcuts）",
       "进阶版模板",
       "进阶使用教程",
       "永久专属标识 👑",
@@ -200,7 +199,7 @@ export default function PricingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i }}
               onClick={() => selectTier(tier.key)}
-              className={`glass rounded-2xl p-6 cursor-pointer transition-all duration-300
+              className={`glass rounded-2xl p-6 cursor-pointer transition-all duration-300 flex flex-col
                 ${activeTier === tier.key
                   ? `ring-2 ${tier.borderColor} scale-[1.02]`
                   : "hover:scale-[1.01]"
@@ -241,7 +240,7 @@ export default function PricingPage() {
 
               {/* 选择按钮 */}
               <button
-                className={`w-full py-2.5 rounded-xl text-sm font-medium transition-all
+                className={`w-full py-2.5 rounded-xl text-sm font-medium transition-all mt-auto
                   ${activeTier === tier.key
                     ? "bg-lavender/20 text-lavender border border-lavender/40"
                     : `${tier.color} border ${tier.borderColor} hover:brightness-125`
