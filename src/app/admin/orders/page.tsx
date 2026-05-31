@@ -3,6 +3,13 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 
+const TIER_NAMES: Record<string, string> = {
+  membership: "会员开通",
+  membership_yearly: "年度订阅",
+  membership_pro: "进阶会员",
+  membership_ultimate: "尊享会员",
+};
+
 interface Order {
   id: string;
   user_id: string | null;
@@ -69,10 +76,23 @@ export default function AdminOrdersPage() {
   }, [filter]);
 
   const handleConfirm = async (order: Order) => {
-    if (!confirm(`确认已收到 ¥${(order.amount / 100).toFixed(0)} 并发送模板链接？`))
-      return;
-    await supabase.from("orders").update({ status: "paid" }).eq("id", order.id);
-    fetchOrders();
+    const isMembership = order.type.startsWith("membership");
+    const msg = isMembership
+      ? `确认收到 ¥${(order.amount / 100).toFixed(0)} 并开通会员？`
+      : `确认已收到 ¥${(order.amount / 100).toFixed(0)} 并发送模板链接？`;
+    if (!confirm(msg)) return;
+
+    // 使用 API 路由（service_role），会员订单会自动设置 is_member
+    const res = await fetch("/api/admin/orders/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId: order.id }),
+    });
+    if (res.ok) {
+      fetchOrders();
+    } else {
+      alert("操作失败");
+    }
   };
 
   const handleReject = async (id: string) => {
@@ -158,8 +178,23 @@ export default function AdminOrdersPage() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1.5 flex-wrap">
-                    <span className="text-sm font-medium text-silver">
-                      {order.template_title}
+                    {/* 会员订单 */}
+                    {order.type.startsWith("membership") ? (
+                      <span className="text-sm font-medium text-silver">
+                        👑 {TIER_NAMES[order.type] || "会员开通"}
+                      </span>
+                    ) : (
+                      <span className="text-sm font-medium text-silver">
+                        {order.template_title || "—"}
+                      </span>
+                    )}
+                    {/* 类型标签 */}
+                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      order.type.startsWith("membership")
+                        ? "bg-amber-400/15 text-amber-400"
+                        : "bg-sky-400/15 text-sky-400"
+                    }`}>
+                      {order.type.startsWith("membership") ? "会员" : "模板"}
                     </span>
                     {statusBadge(order.status)}
                     {order.payment_method && (
@@ -179,8 +214,8 @@ export default function AdminOrdersPage() {
                     </span>
                   </div>
 
-                  {/* 模板链接（待核验时显示，方便管理员复制后发邮件） */}
-                  {order.template_links && order.template_links.length > 0 && (
+                  {/* 模板链接（仅模板订单，待核验时显示） */}
+                  {!order.type.startsWith("membership") && order.template_links && order.template_links.length > 0 && (
                     <div className="mb-3 p-3 rounded-xl bg-cosmic/20 border border-lavender/10">
                       <p className="text-xs text-silver/40 mb-2">
                         📎 模板链接（确认后发到用户邮箱）
@@ -219,7 +254,9 @@ export default function AdminOrdersPage() {
                         onClick={() => handleConfirm(order)}
                         className="px-4 py-1.5 rounded-full text-xs font-medium bg-emerald-400/15 text-emerald-400 hover:bg-emerald-400/25 transition-colors"
                       >
-                        ✅ 确认收款并发货
+                      {order.type.startsWith("membership")
+                          ? "✅ 确认收款并开通会员"
+                          : "✅ 确认收款并发货"}
                       </button>
                       <button
                         onClick={() => handleReject(order.id)}
@@ -232,7 +269,7 @@ export default function AdminOrdersPage() {
 
                   {order.status === "paid" && (
                     <p className="text-xs text-emerald-400/50">
-                      ✅ 已发货 —{" "}
+                      {order.type.startsWith("membership") ? "✅ 已开通 — " : "✅ 已发货 — "}
                       {new Date(order.created_at).toLocaleString("zh-CN")}
                     </p>
                   )}
