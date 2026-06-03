@@ -1,10 +1,8 @@
 import { createAdminClient } from "@/lib/admin-client";
 import { NextResponse } from "next/server";
 
-// 使用 service_role 绕过 RLS，允许管理员确认订单
-const supabaseAdmin = createAdminClient();
-
 export async function POST(request: Request) {
+  const supabaseAdmin = createAdminClient();
   try {
     const { orderId } = await request.json();
     if (!orderId) {
