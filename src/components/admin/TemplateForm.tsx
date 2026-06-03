@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { INPUT_CLASS } from "@/lib/styles";
 import type { Template, TutorialStep, RichContentBlock } from "@/types";
 
 interface Props {
@@ -157,8 +158,6 @@ export default function TemplateForm({ template }: Props) {
   };
 
   // ========== 样式 ==========
-  const inputClass =
-    "w-full px-3 py-2 rounded-xl bg-cosmic/30 border border-lavender/20 text-sm text-silver placeholder:text-silver/20 focus:outline-none focus:border-lavender/50 transition-colors";
   const labelClass = "block text-xs text-silver/50 mb-1.5";
   const sectionClass = "glass rounded-2xl p-6 space-y-4";
 
@@ -196,7 +195,7 @@ export default function TemplateForm({ template }: Props) {
         <div>
           <label className={labelClass}>标题 *</label>
           <input
-            className={inputClass}
+            className={INPUT_CLASS}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="模板名称"
@@ -205,7 +204,7 @@ export default function TemplateForm({ template }: Props) {
         <div>
           <label className={labelClass}>描述</label>
           <textarea
-            className={inputClass + " resize-none"}
+            className={INPUT_CLASS + " resize-none"}
             rows={3}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -218,7 +217,7 @@ export default function TemplateForm({ template }: Props) {
           <label className={labelClass}>封面图</label>
           <div className="flex items-center gap-3">
             <input
-              className={inputClass + " flex-1"}
+              className={INPUT_CLASS + " flex-1"}
               value={coverImage}
               onChange={(e) => setCoverImage(e.target.value)}
               placeholder="https://... 或上传图片"
@@ -256,7 +255,7 @@ export default function TemplateForm({ template }: Props) {
           <div>
             <label className={labelClass}>标签（逗号分隔）</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               placeholder="效率, 项目管理"
@@ -265,7 +264,7 @@ export default function TemplateForm({ template }: Props) {
           <div>
             <label className={labelClass}>价格（元，0=免费）</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               type="number"
               value={price / 100}
               onChange={(e) => setPrice(Number(e.target.value) * 100)}
@@ -291,14 +290,14 @@ export default function TemplateForm({ template }: Props) {
           <div>
             <label className={labelClass}>链接1 — 标签</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               value={link1Label}
               onChange={(e) => setLink1Label(e.target.value)}
               placeholder="预览"
             />
             <label className={labelClass + " mt-2"}>链接1 — URL</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               value={link1Url}
               onChange={(e) => setLink1Url(e.target.value)}
               placeholder="https://notion.so/..."
@@ -307,14 +306,14 @@ export default function TemplateForm({ template }: Props) {
           <div>
             <label className={labelClass}>链接2 — 标签</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               value={link2Label}
               onChange={(e) => setLink2Label(e.target.value)}
               placeholder="解锁模板"
             />
             <label className={labelClass + " mt-2"}>链接2 — URL</label>
             <input
-              className={inputClass}
+              className={INPUT_CLASS}
               value={link2Url}
               onChange={(e) => setLink2Url(e.target.value)}
               placeholder="https://notion.so/..."
@@ -329,7 +328,7 @@ export default function TemplateForm({ template }: Props) {
         <div>
           <label className={labelClass}>每行一个功能点</label>
           <textarea
-            className={inputClass + " resize-none"}
+            className={INPUT_CLASS + " resize-none"}
             rows={6}
             value={featuresText}
             onChange={(e) => setFeaturesText(e.target.value)}
@@ -347,7 +346,7 @@ export default function TemplateForm({ template }: Props) {
         <div>
           <label className={labelClass}>视频链接（一行一个）</label>
           <textarea
-            className={inputClass + " resize-none"}
+            className={INPUT_CLASS + " resize-none"}
             rows={2}
             value={videoUrlsText}
             onChange={(e) => setVideoUrlsText(e.target.value)}
@@ -395,7 +394,7 @@ export default function TemplateForm({ template }: Props) {
                 </button>
               </div>
               <input
-                className={inputClass}
+                className={INPUT_CLASS}
                 value={step.title}
                 onChange={(e) => {
                   const updated = [...steps];
@@ -405,7 +404,7 @@ export default function TemplateForm({ template }: Props) {
                 placeholder="步骤标题"
               />
               <textarea
-                className={inputClass + " resize-none"}
+                className={INPUT_CLASS + " resize-none"}
                 rows={2}
                 value={step.description}
                 onChange={(e) => {
@@ -416,7 +415,7 @@ export default function TemplateForm({ template }: Props) {
                 placeholder="步骤描述"
               />
               <input
-                className={inputClass}
+                className={INPUT_CLASS}
                 value={step.image_url || ""}
                 onChange={(e) => {
                   const updated = [...steps];
@@ -476,7 +475,7 @@ export default function TemplateForm({ template }: Props) {
                 </button>
               </div>
               <input
-                className={inputClass}
+                className={INPUT_CLASS}
                 value={block.image_url}
                 onChange={(e) => {
                   const updated = [...richBlocks];
@@ -496,7 +495,7 @@ export default function TemplateForm({ template }: Props) {
                 />
               )}
               <textarea
-                className={inputClass + " resize-none"}
+                className={INPUT_CLASS + " resize-none"}
                 rows={3}
                 value={block.text}
                 onChange={(e) => {

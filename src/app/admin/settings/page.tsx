@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase";
+import { INPUT_CLASS } from "@/lib/styles";
 
 type QrSlot = {
   key: string;
@@ -72,9 +73,6 @@ export default function AdminSettingsPage() {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
-
-  const inputClass =
-    "w-full px-3 py-2 rounded-xl bg-cosmic/30 border border-lavender/20 text-sm text-silver placeholder:text-silver/20 focus:outline-none focus:border-lavender/50 transition-colors";
 
   return (
     <div>
@@ -149,7 +147,7 @@ export default function AdminSettingsPage() {
 
                       {/* URL 输入 */}
                       <input
-                        className={inputClass}
+                        className={INPUT_CLASS}
                         value={url}
                         onChange={(e) =>
                           setQrMap((prev) => ({ ...prev, [slot.key]: e.target.value }))

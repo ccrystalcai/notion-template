@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase";
+import { centsToYuan } from "@/lib/utils";
 import Link from "next/link";
 
 const TIER_LABELS: Record<string, string> = {
@@ -290,7 +291,7 @@ export default function AccountPage() {
                       </p>
                     </div>
                     <span className="text-sm font-medium text-silver/70 flex-shrink-0 ml-3">
-                      ¥{(order.amount / 100).toFixed(0)}
+                      ¥{centsToYuan(order.amount)}
                     </span>
                   </div>
                 ))}

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/admin-client";
 
 // POST: 提交模板问题反馈
 export async function POST(
@@ -13,10 +13,7 @@ export async function POST(
     return NextResponse.json({ error: "内容不能为空" }, { status: 400 });
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createAdminClient();
 
   // 尝试获取当前用户信息
   let userId: string | null = null;

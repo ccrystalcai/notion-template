@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/admin-client";
 
 // POST: 增加模板浏览次数（使用 service_role 绕过 RLS）
 export async function POST(
@@ -8,10 +8,7 @@ export async function POST(
 ) {
   const { id } = await params;
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createAdminClient();
 
   // 先查当前值再 +1
   const { data: current } = await supabase

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
+import { centsToYuan } from "@/lib/utils";
 
 const TIER_NAMES: Record<string, string> = {
   membership: "会员开通",
@@ -78,8 +79,8 @@ export default function AdminOrdersPage() {
   const handleConfirm = async (order: Order) => {
     const isMembership = order.type.startsWith("membership");
     const msg = isMembership
-      ? `确认收到 ¥${(order.amount / 100).toFixed(0)} 并开通会员？`
-      : `确认已收到 ¥${(order.amount / 100).toFixed(0)} 并发送模板链接？`;
+      ? `确认收到 ¥${centsToYuan(order.amount)} 并开通会员？`
+      : `确认已收到 ¥${centsToYuan(order.amount)} 并发送模板链接？`;
     if (!confirm(msg)) return;
 
     // 使用 API 路由（service_role），会员订单会自动设置 is_member
@@ -207,7 +208,7 @@ export default function AdminOrdersPage() {
                   <div className="flex items-center gap-4 text-xs text-silver/40 mb-3 flex-wrap">
                     <span>📧 {order.buyer_email || "未填写"}</span>
                     <span className="text-silver/70 font-medium">
-                      ¥{(order.amount / 100).toFixed(0)}
+                      ¥{centsToYuan(order.amount)}
                     </span>
                     <span>
                       {new Date(order.created_at).toLocaleString("zh-CN")}

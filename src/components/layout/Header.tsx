@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const router = useRouter();
@@ -117,6 +118,9 @@ export default function Header() {
               </button>
             )}
 
+            {/* 主题切换 */}
+            <ThemeToggle />
+
             {user ? (
               /* 已登录 */
               <div className="relative">
@@ -214,6 +218,11 @@ export default function Header() {
               >
                 会员套餐
               </Link>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-silver/40">主题</span>
+                <ThemeToggle />
+              </div>
+
               {user ? (
                 <>
                   <Link

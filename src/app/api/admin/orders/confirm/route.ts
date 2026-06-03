@@ -1,12 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/admin-client";
 import { NextResponse } from "next/server";
 
 // 使用 service_role 绕过 RLS，允许管理员确认订单
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } }
-);
+const supabaseAdmin = createAdminClient();
 
 export async function POST(request: Request) {
   try {

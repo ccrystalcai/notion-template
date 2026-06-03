@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase";
+import { INPUT_CLASS } from "@/lib/styles";
+import { centsToYuan } from "@/lib/utils";
 import type { Template } from "@/types";
 
 interface PaymentModalProps {
@@ -131,9 +133,6 @@ export default function PaymentModal({
     }
   };
 
-  const inputClass =
-    "w-full px-3 py-2 rounded-xl bg-cosmic/30 border border-lavender/20 text-sm text-silver placeholder:text-silver/20 focus:outline-none focus:border-lavender/50 transition-colors";
-
   return (
     <AnimatePresence>
       {open && (
@@ -195,7 +194,7 @@ export default function PaymentModal({
                 {/* 价格 */}
                 <p className="text-center mb-5">
                   <span className="text-4xl font-bold text-silver">
-                    ¥{(template.price / 100).toFixed(0)}
+                    ¥{centsToYuan(template.price)}
                   </span>
                 </p>
 
@@ -205,7 +204,7 @@ export default function PaymentModal({
                     接收模板的邮箱 *
                   </label>
                   <input
-                    className={inputClass}
+                    className={INPUT_CLASS}
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -261,7 +260,7 @@ export default function PaymentModal({
                   <p className="text-sm font-medium text-gray-700 mt-3">
                     转账{" "}
                     <span className="text-lg font-bold text-rose-500">
-                      ¥{(template.price / 100).toFixed(0)}
+                      ¥{centsToYuan(template.price)}
                     </span>
                   </p>
                 </div>

@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { createClient } from "@/lib/supabase";
 import type { Template } from "@/types";
+import { centsToYuan } from "@/lib/utils";
 
 type ViewMode = "gallery" | "list";
 
@@ -466,7 +467,7 @@ function ListView({ templates }: { templates: Template[] }) {
                       </span>
                     ) : (
                       <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-lavender/20 text-lavender">
-                        ¥{(tpl.price / 100).toFixed(0)}
+                        ¥{centsToYuan(tpl.price)}
                       </span>
                     )}
                     <svg

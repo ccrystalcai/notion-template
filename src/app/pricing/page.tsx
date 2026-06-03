@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase";
+import { INPUT_CLASS } from "@/lib/styles";
+import { centsToYuan } from "@/lib/utils";
 import Link from "next/link";
 
 type PaymentMethod = "wechat" | "alipay";
@@ -170,9 +172,6 @@ export default function PricingPage() {
     setSubmitting(false);
   };
 
-  const inputClass =
-    "w-full px-3 py-2 rounded-xl bg-cosmic/30 border border-lavender/20 text-sm text-silver placeholder:text-silver/20 focus:outline-none focus:border-lavender/50 transition-colors";
-
   return (
     <main className="min-h-screen pt-24 pb-16 px-4">
       <div className="max-w-5xl mx-auto">
@@ -279,7 +278,7 @@ export default function PricingPage() {
                       预计 2 小时内开通
                     </p>
                     <p className="text-sm font-medium text-lavender mb-1">
-                      {activeTierData.name} — ¥{(activeTierData.price / 100).toFixed(0)}
+                      {activeTierData.name} — ¥{centsToYuan(activeTierData!.price)}
                     </p>
                     <p className="text-xs text-silver/30 mb-6">
                       请留意 {email}，开通后将发送通知
@@ -298,7 +297,7 @@ export default function PricingPage() {
                   <div className="glass rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                       <h2 className="text-lg font-semibold text-silver">
-                        💳 {activeTierData.name} — ¥{(activeTierData.price / 100).toFixed(0)}
+                        💳 {activeTierData.name} — ¥{centsToYuan(activeTierData!.price)}
                       </h2>
                       <button
                         onClick={() => setActiveTier(null)}
@@ -314,7 +313,7 @@ export default function PricingPage() {
                         接收通知的邮箱 *
                       </label>
                       <input
-                        className={inputClass}
+                        className={INPUT_CLASS}
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -368,7 +367,7 @@ export default function PricingPage() {
                       <p className="text-sm font-medium text-gray-700 mt-3">
                         转账{" "}
                         <span className="text-lg font-bold text-rose-500">
-                          ¥{(activeTierData.price / 100).toFixed(0)}
+                          ¥{centsToYuan(activeTierData!.price)}
                         </span>
                       </p>
                     </div>

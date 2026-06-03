@@ -1,15 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const adminSupabase = () =>
-  createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+import { createAdminClient } from "@/lib/admin-client";
 
 // GET: 获取所有设置
 export async function GET() {
-  const supabase = adminSupabase();
+  const supabase = createAdminClient();
   const { data } = await supabase.from("site_settings").select("*");
 
   const settings: Record<string, string> = {};
@@ -22,7 +16,7 @@ export async function GET() {
 
 // PUT: 更新设置
 export async function PUT(request: Request) {
-  const supabase = adminSupabase();
+  const supabase = createAdminClient();
   const body = await request.json();
 
   for (const [key, value] of Object.entries(body)) {
